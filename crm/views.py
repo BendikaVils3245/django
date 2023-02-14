@@ -1,16 +1,32 @@
 from django.shortcuts import render
 from .models import Order
 from .forms import OrderForms
+from cms.models import CmsSlider
+from price.models import PriceCard,PriceTable
+
 
 # Create your views here.
-#Выводит весь query set
+#Выводит цены и услуги
 def first_page(request):
-    object_list = Order.objects.all()
+    slider_list = CmsSlider.objects.all()
+    pc_1 = PriceCard.objects.get(pk=1)
+    pc_2 = PriceCard.objects.get(pk=2)
+    pc_3 = PriceCard.objects.get(pk=3)
+    price_table = PriceTable.objects.all()
     form = OrderForms()
-    return render(request,'./index.html', {'object_list':object_list,
-                                           'form':form})
+    dict_obj = {'slider_list':slider_list,
+                'pc_1':pc_1,
+                'pc_2':pc_2,
+                'pc_3':pc_3,
+                'price_table':price_table,
+                'form':form,
+                }
+    return render(request,'./index.html', dict_obj)
 
-#Отправка формы и заносит её в БД
+
+
+
+#Отправка формы и занесение её в БД
 def thanks_page(request):
     name = request.POST['name']
     phone = request.POST['phone']

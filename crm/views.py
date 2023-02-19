@@ -3,6 +3,8 @@ from .models import Order
 from .forms import OrderForms
 from cms.models import CmsSlider
 from price.models import PriceCard,PriceTable
+from telebot.sendmessage import sendTelegram
+
 
 
 # Create your views here.
@@ -25,12 +27,11 @@ def first_page(request):
 
 
 
-
 #Отправка формы и занесение её в БД
 def thanks_page(request):
     name = request.POST['name']
     phone = request.POST['phone']
     element = Order(order_name = name,order_phone = phone)
     element.save()
-    return render(request,'./thanks_page.html',{'name':name,
-                                                'phone': phone})
+    sendTelegram(tg_name = name , tg_phone = phone)
+    return render(request,'./thanks.html',{'name':name,})
